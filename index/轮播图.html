@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>网页设计</title>
+		
+		<link rel="stylesheet" type="text/css" href="css/index.css">
+        <script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+	</head>
+	<body>
+		<div class="banner_center">
+		<div class="banner" id="js_ban_content">
+			<div class="banner1 banner_common" ><a href="#"><img src="./images/banner11.png" width="100%" height="100%"></a></div>
+			<div class="banner2 banner_common" style="display:none"><a href="#"><img src="./images/banner21.jpg" width="100%" height="100%"></a></div>
+			<div class="banner3 banner_common" style="display:none"><a href="#"><img src="./images/banner31.jpg" width="100%" height="100%"></a></div>
+			<div class="banner4 banner_common" style="display:none"><a href="#"><img src="./images/banner41.jpg" width="100%" height="100%"></a></div>
+			<div class="banner5 banner_common" style="display:none"><a href="#"><img src="./images/banner51.jpg" width="100%" height="100%"></a></div>
+			<div class="banner6 banner_common" style="display:none"><a href="#"><img src="./images/banner61.jpg" width="100%" height="100%"></a></div>
+		</div>
+
+		<!-- banner图左右 -->		
+		<div class="banner-control" id="js_ban_button_box">
+			<a href="javascript:;" class="left">左</a>
+			<a href="javascript:;" class="right">右</a>
+		</div>
+
+		<!-- banner图下方按钮 -->
+		<div class="huadong" id="huadong">
+			<ul>
+				<li class='btn' id='btn1' rel=1 default=1 ><span></span></li>
+				<li class='btn' id='btn2' rel=2 default=0 ><span></span></li>
+				<li class='btn' id='btn3' rel=3 default=0 ><span></span></li>
+				<li class='btn' id='btn4' rel=4 default=0 ><span></span></li>
+				<li class='btn' id='btn5' rel=5 default=0 ><span></span></li>
+				<li class='btn' id='btn6' rel=6 default=0 ><span></span></li>
+			</ul>
+		</div>
+	</div>
+
+	</body>
+
+<script type="text/javascript">
+        $(function(){
+			$("li[default*='1']").css('background','red');
+            var defaultInd = 0;
+            var list = $('#js_ban_content').children();//查找子元素
+            var count = 0;
+
+
+            var change = function(newInd, callback){
+                if(count) return;
+                count = 2;
+                $(list[defaultInd]).fadeOut(400, function(){//淡出
+                    count--;
+                    if(count <= 0){
+                        if(start.timer) window.clearTimeout(start.timer);
+                        callback && callback();
+                    }
+                });
+                $(list[newInd]).fadeIn(400, function(){
+                    defaultInd = newInd;
+                    count--;
+                    if(count <= 0){
+                        if(start.timer) window.clearTimeout(start.timer);
+                        callback && callback();//回调函数
+                    }
+                });
+            }
+            
+            var next = function(callback){
+                var newInd = defaultInd + 1;
+                if(newInd >= list.length){
+                    newInd = 0;
+                }
+                change(newInd, callback);
+            }
+            
+            var start = function(){
+                if(start.timer) window.clearTimeout(start.timer);  //清除setTimeout
+                start.timer = window.setTimeout(function(){        //在指定毫秒数后调用函数
+                    next(function(){
+						abc('right');
+                        start();
+                    });
+                }, 4000);
+            }
+            
+            start();
+            
+            //左右按钮
+            $('#js_ban_button_box').on('click', 'a', function(){//在元素上绑定事件
+                var btn = $(this);
+				var rel=$("li[default*='1']").attr('rel');
+                if(btn.hasClass('right')){
+                    //next
+                    next(function(){
+                        abc('right');
+                        start();
+                    });
+                }
+                else{
+                    //prev
+                    var newInd = defaultInd - 1;
+                    if(newInd < 0){
+                        newInd = list.length - 1;
+                    }
+                    change(newInd, function(){
+                        abc('left');
+                        start();
+                    });
+                }
+                return false;
+            });
+   
+            //
+             $('#huadong').on('click', 'li', function(){
+                var btn = $(this).attr('rel');
+                var newInd = btn - 1;
+                change(newInd, function(){
+					abc(btn);
+                    start();
+                });
+            });
+            
+        });
+//轮番图按钮 切换
+function abc(site){
+		var rel=$("li[default*='1']").attr('rel');
+		if(site=='left'){
+			var next=rel-1;
+			if(next==0){next=6;}
+		}else if(site=='right'){
+		     var next=parseInt(rel)+1;     //取整值
+		     if(next==7){next=1;}
+		}else{
+		     var next=site;
+		}
+        $('.btn').css('background','#fff');
+	    $('.btn').attr('default',0);
+	    $('#btn'+next).css('background','red');
+		$('#btn'+next).attr('default',1);
+   }
+</script>
+
+
+<script type="text/javascript">
+        $(function(){
+			//$("li[default*='1']").css('background','red');
+            var defaultInd2 = 0;
+            var list2 = $('#js_ban_content2').children();
+            var huadong2 = $('#huadong2').children();
+            var count2 = 0;
+            var change2 = function(newIn2, callback){
+                if(count2) return;
+                count2 = 2;
+                $(list2[defaultInd2]).fadeOut(400, function(){        //淡出
+                	//$(this).toggleClass("on");
+                	// $(huadong2[defaultInd2]).toggleClass("on");
+                	$(huadong2[defaultInd2]).removeAttr("class");//清除属性
+                    count2--;
+                    if(count2 <= 0){
+                        if(start2.timer) window.clearTimeout(start.timer);
+                        callback && callback();
+                    }
+                });
+                $(list2[newIn2]).fadeIn(400, function(){             //淡入
+                	$(huadong2[newIn2]).toggleClass("on");
+                    defaultInd2 = newIn2;
+                    count2--;
+                    if(count2 <= 0){
+                        if(start2.timer) window.clearTimeout(start2.timer);
+                        callback && callback();
+                    }
+                });
+            }
+            
+            var next2 = function(callback){
+                var newInd2 = defaultInd2 + 1;
+                if(newInd2 >= list2.length){
+                    newInd2 = 0;
+                }
+                change2(newInd2, callback);
+            }
+            
+            var start2 = function(){
+                if(start2.timer) window.clearTimeout(start2.timer);
+                start2.timer = window.setTimeout(function(){
+                    next2(function(){
+                        start2();
+                    });
+                }, 4000);
+            }
+            
+            start2();
+
+            $('#huadong2').on('click', 'li', function(){
+                var btn = $(this).attr('rel');
+                var newIn2 = btn - 1;
+                change2(newIn2, function(){
+                    start2();
+                });
+            });
+        });    
+            //左右按钮
+    //         $('#js_ban_button_box').on('click', 'a', function(){
+    //             var btn = $(this);
+				// var rel=$("li[default*='1']").attr('rel');
+    //             if(btn.hasClass('right')){
+    //                 //next
+    //                 next(function(){
+    //                     abc('right');
+    //                     start();
+    //                 });
+    //             }
+    //             else{
+    //                 //prev
+    //                 var newInd = defaultInd - 1;
+    //                 if(newInd < 0){
+    //                     newInd = list.length - 1;
+    //                 }
+    //                 change(newInd, function(){
+    //                     abc('left');
+    //                     start();
+    //                 });
+    //             }
+    //             return false;
+    //         });
+   
+            //
+
+            
+        
+// //轮番图按钮 切换
+// function abc(site){
+// 		var rel=$("li[default*='1']").attr('rel');
+// 		if(site=='left'){
+// 			var next=rel-1;
+// 			if(next==0){next=6;}
+// 		}else if(site=='right'){
+// 		     var next=parseInt(rel)+1;
+// 		     if(next==7){next=1;}
+// 		}else{
+// 		     var next=site;
+// 		}
+//         $('.btn').css('background','#fff');
+// 	    $('.btn').attr('default',0);
+// 	    $('#btn'+next).css('background','red');
+// 		$('#btn'+next).attr('default',1);
+//    }
+</script>
+</html>

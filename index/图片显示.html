@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>图片显示</title>
+		<style>
+		*{margin:0;padding:0;text-decoration:none;text-align:center;list-style:none;}
+		.title_t{width: 100%;height: 50px;min-width: 1200px;background: #F5F5F5;}
+        .t_main{width: 1200px;margin: 0 auto;height: 50px;}
+        .t_f{width: 300px;height: 50px;float:left;position: relative;}
+        .follow{float: left;}
+        .follow li{float: left;height: 50px;line-height: 50px;}
+.follow_tell{font-size: 16px;color: #ff6c06;margin-right: 10px;float: left;}
+small{color: #929292;font-size: 14px;}
+.follow_weixin{width: 24px;height: 24px;line-height: 24px;cursor: pointer;margin-top: 5px;border-radius: 50%;}
+.weixin{width: 162px;height: auto;position: absolute;top:50px;left: 0px;}
+.qiye{width: 290px;height: 50px;line-height: 50px;overflow: hidden;color: #888;float: left;}
+.t_r{float: right;}
+.t_r li{float: left;}
+.t_r a{float: left;padding: 0 20px;height: 50px;line-height: 50px;color: #333333;font-size: 14px;}
+.t_r a:hover{color: #1b93d2;text-decoration: underline;}
+.t_r1 a{color: #1b93d2;}
+.t_r1 a:hover{background: red;text-decoration: none;}
+.t_r4{position: relative;}
+.t_r4 span{position: absolute;top: 7px;left: 0px;}
+.duan{width: 162px;height: auto;position: absolute;top:50px;right: 0px;z-index: 10;}
+
+		</style>
+
+
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+
+
+
+
+<script>
+
+//思路：  li上移，后面补上，li循环
+
+
+
+function AutoScroll(obj) {
+    $(obj).find("ul:first").animate({marginTop: "-25px"},1100,
+    function() {
+		$(this).find("li:first").appendTo(this);
+        $(this).css({
+            marginTop: "0px"
+        });
+    });
+}
+$(document).ready(function() {//在文件加载完后激活函数
+	var items = ['scrollDiv'];
+	var items2 = ['scrollDiv2'];
+	for (var i = 0; i < items.length; i++) {
+		setInterval('AutoScroll("#' + items[i] + '")', 2000);//自动展示，加载后自动显示，   获取id
+	}
+	for (var i = 0; i < items2.length; i++) {
+		setInterval('AutoScroll("#' + items2[i] + '")', 2000);
+	}
+});
+
+// 导航动态
+
+$(function(){
+	$('.nav li').hover(function(){//简化鼠标进入与鼠标离开事件
+		$('span',this).stop().css('height','2px');
+		$('span',this).animate({//执行css属性内的自定义动画,样式，速度，动画速度，animate函数执行完要执行的函数
+			left:'5%',
+			width:'90%',
+			right:'0'
+		},1100);
+	},function(){
+		$('span',this).stop().animate({
+			left:'0',
+			width:'0'
+		},1100);
+	});
+});
+</script>
+
+
+
+<script>
+function  showImg(){
+
+	//获取id标签
+document.getElementById("duan").style.display='block';//段内生出行内框，元素为块级元素
+}
+function hideImg(){
+document.getElementById("duan").style.display='none';//隐藏
+}
+</script>
+<script type="text/javascript">
+function  showI(){
+document.getElementById("wxImg").style.display='block';
+}
+function hideI(){
+document.getElementById("wxImg").style.display='none';
+}
+</script>
+
+	</head>
+	<body>
+		<div class="title_t">
+			<div class="t_main">	
+				<div class="qiye" id="scrollDiv">
+					<ul>
+						<li>2015年安徽年度互联网金融品牌营销奖1</li>
+						<li>2016年安徽年度互联网金融品牌营销奖2</li>
+						<li>2017年安徽年度互联网金融品牌营销奖3</li>
+						<li>2018年安徽年度互联网金融品牌营销奖4</li>
+						<li>2019年安徽年度互联网金融品牌营销奖5</li>
+					</ul>
+				</div>
+				<div class="t_f">
+					<ul class="follow">
+						<li class="follow_weixin" onMouseOut="hideI()"  onmouseover="showI()"><img src="./images/weixin1.png" width="24" height="24"></li>
+					</ul>
+					<div class="weixin" style="display: none;" id="wxImg"><img src="./images/app1.jpg"></div>
+				</div>
+				<ul class="t_r">
+					<li class="t_r1"><a href="#" class="">登录</a><a href="#">注册</a></li>
+					<li><a href="#">新手指引</a></li>
+					<li><a href="#">创投论坛</a></li>
+					<li class="t_r4" >
+						<a href="#" target="_blank" onMouseOut="hideImg()"  onmouseover="showImg()"><span><img src="./images/duan.png"></span>手机端下载</a>
+						<div class="duan" id="duan" style="display:none"><img src="./images/app1.jpg"></div>
+					</li>					
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
